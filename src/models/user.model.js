@@ -28,11 +28,11 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    avatar: {
+    coverImage: {
         type: String,
     },
     watchHistory: [{
-        type: schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Video"
     }],
     password: {
@@ -46,17 +46,20 @@ const userSchema = new Schema({
     timestamps: true
 })
 
+//// save hash pasword in database
 userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) return next();
 
-    this.password = bcrypt.hash(this.password, 10)
+    this.password = await bcrypt.hash(this.password, 10)
     next()
 })
 
+/// Check password is correct or not
 userSchema.methods.isPasswordCorrect = async function (password) {
     return await bcrypt.compare(password, this.password)
 }
 
+// GenerateAccess Token
 userSchema.methods.generateAccessToken = function () {
     return jwt.sing(
         {
@@ -72,13 +75,11 @@ userSchema.methods.generateAccessToken = function () {
 
     )
 }
-userSchema.methods.refereshAccessToken = function () {
+// refresh token
+userSchema.methods.refreshAccessToken = function () {
     return jwt.sing(
         {
-            _id: this._id,
-            email: this.email,
-            username: this.username,
-            fullName: this.fullName
+            _id: this._id
         },
         process.env.REFERESH_TOKEN_SECRET,
         {

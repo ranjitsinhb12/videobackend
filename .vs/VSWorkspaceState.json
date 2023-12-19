@@ -1,14 +1,12 @@
 {
   "ExpandedNodes": [
     "",
-    "\\public",
-    "\\public\\temp",
     "\\src",
     "\\src\\controllers",
+    "\\src\\middlewares",
     "\\src\\models",
-    "\\src\\routes",
-    "\\src\\utils"
+    "\\src\\routes"
   ],
-  "SelectedNode": "\\src\\routes\\user.routes.js",
+  "SelectedNode": "\\src\\middlewares\\auth.middleware.js",
   "PreviewInSolutionExplorer": false
 }
